@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Teacher Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-page">
+    <form class="auth-card" method="post">
+        <h1>Create Teacher Account</h1>
+        {% if error %}<p class="error">{{ error }}</p>{% endif %}
+        <label>Full name<input type="text" name="name" required></label>
+        <label>Email<input type="email" name="email" required></label>
+        <label>Password (6+ characters)<input type="password" name="password" required></label>
+        <button class="btn primary" type="submit">Register</button>
+        <p class="muted">Already registered? <a href="{{ url_for('login') }}">Log in</a></p>
+    </form>
+</body>
+</html>

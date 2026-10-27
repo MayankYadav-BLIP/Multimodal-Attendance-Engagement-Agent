@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Attendance Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body data-session-id="{{ s.id }}">
+    <header>
+        <h1>Attendance Details</h1>
+        <div class="header-right">
+            <span class="muted">Teacher: {{ teacher_name }}</span>
+            <a class="logout" href="{{ url_for('records') }}">Records</a>
+            <a class="logout" href="{{ url_for('index') }}">Dashboard</a>
+            <a class="logout" href="{{ url_for('logout') }}">Log out</a>
+        </div>
+    </header>
+
+    <main class="records-main">
+        <section class="card">
+            <div class="stats-grid detail-grid">
+                <div class="stat"><span class="label">Class</span><span class="value">{{ s.class_name }}</span></div>
+                <div class="stat"><span class="label">Subject</span><span class="value">{{ s.subject or "–" }}</span></div>
+                <div class="stat"><span class="label">Date</span><span class="value">{{ s.session_date }}</span></div>
+                <div class="stat"><span class="label">Time</span><span class="value">{{ s.started_at[11:16] }} – {{ s.ended_at[11:16] if s.ended_at else "" }}</span></div>
+                <div class="stat"><span class="label">Present</span><span class="value">{{ s.present_count }}</span></div>
+                <div class="stat"><span class="label">Absent</span><span class="value">{{ s.absent_count }}</span></div>
+                <div class="stat"><span class="label">Class strength</span><span class="value">{{ s.total_students }}</span></div>
+                <div class="stat"><span class="label">Average engagement</span><span class="value">{{ s.avg_engagement if s.avg_engagement is not none else "–" }}</span></div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Student attendance
+                {% if students %}<a class="logout view-all" href="{{ url_for('record_students_csv', session_id=s.id) }}">Download CSV</a>{% endif %}
+            </h2>
+            {% if students %}
+            <div class="table-scroll tall">
+                <table>
+                    <thead>
+                        <tr><th>Roll no</th><th>Name</th><th>Status</th><th>First seen</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for st in students %}
+                        <tr>
+                            <td>{{ st.roll_no }}</td>
+                            <td>{{ st.name }}</td>
+                            <td class="{{ 'st-present' if st.status == 'present' else 'st-absent' }}">{{ st.status|capitalize }}</td>
+                            <td>{{ st.first_seen or "–" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="muted">This session was recorded before student lists were added, so only the counts above are available.</p>
+            {% endif %}
+        </section>
+
+        <section class="card">
+            <h2>Engagement timeline (every 5 seconds)</h2>
+            {% if intervals %}
+            <div class="chart wide">
+                {% for r in intervals %}
+                {% set e = r.engagement if r.engagement is not none else 0 %}
+                <div class="bar-wrap" title="{{ r.time }} | engagement {{ e }} | speaking {{ r.speaking_pct }}%">
+                    <div class="bar {{ 'high' if e >= 70 else ('mid' if e >= 40 else 'low') }}" data-h="{{ (e * 1.2)|round|int }}"></div>
+                    <div class="bar-label">{{ r.time[3:] }}</div>
+                </div>
+                {% endfor %}
+            </div>
+                        {% else %}
+            <p class="muted">No timeline was recorded.</p>
+            {% endif %}
+        </section>
+
+        <section class="card">
+            <h2>Teaching suggestions</h2>
+            <button id="suggest-btn" class="btn primary" type="button">Get suggestions for this session</button>
+            <p id="suggest-source" class="muted"></p>
+            <ul id="suggest-list" class="suggest"></ul>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/session.js') }}"></script>
+</body>
+</html>

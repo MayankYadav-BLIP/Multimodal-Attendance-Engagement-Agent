@@ -1,0 +1,44 @@
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Local databases and attendance records
+*.db
+*.sqlite
+*.sqlite3
+attendance
+
+# Personal data and generated files
+uploads/
+output/
+outputs/
+face_data/
+known_faces/
+*.jpg
+*.jpeg
+*.png
+
+# Logs
+*.log
+
+# Editor and operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Additional generated files
+*.log.*
+.vscode-test/

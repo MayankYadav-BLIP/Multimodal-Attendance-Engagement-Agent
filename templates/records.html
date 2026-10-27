@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Attendance Records</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Attendance Records</h1>
+        <div class="header-right">
+            <span class="muted">Teacher: {{ teacher_name }}</span>
+            <a class="logout" href="{{ url_for('index') }}">Dashboard</a>
+            <a class="logout" href="{{ url_for('logout') }}">Log out</a>
+        </div>
+    </header>
+
+    <main class="records-main">
+        <section class="card">
+            <form class="filter" method="get">
+                <label>From
+                    <input type="date" name="from" value="{{ date_from }}">
+                </label>
+                <label>To
+                    <input type="date" name="to" value="{{ date_to }}">
+                </label>
+                <label>Class
+                    <select name="class_id">
+                        <option value="">All classes</option>
+                        {% for c in classes %}
+                        <option value="{{ c.id }}" {% if class_id == c.id %}selected{% endif %}>{{ c.name }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <button class="btn primary" type="submit">Filter</button>
+                <a class="btn secondary linkbtn" href="{{ url_for('records') }}">Clear</a>
+                <a class="btn secondary linkbtn" href="{{ csv_url }}">Download CSV</a>
+            </form>
+        </section>
+
+        <section class="card">
+            {% if sessions %}
+            <p class="muted">{{ sessions|length }} session(s) found. Click a date to see the student list.</p>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Class</th>
+                            <th>Subject</th>
+                            <th>Time</th>
+                            <th>Present</th>
+                            <th>Absent</th>
+                            <th>Strength</th>
+                            <th>Engagement</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in sessions %}
+                        <tr>
+                            <td><a href="{{ url_for('record_detail', session_id=s.id) }}">{{ s.session_date }}</a></td>
+                            <td>{{ s.class_name }}</td>
+                            <td>{{ s.subject or "–" }}</td>
+                            <td>{{ s.started_at[11:16] }} – {{ s.ended_at[11:16] if s.ended_at else "" }}</td>
+                            <td>{{ s.present_count }}</td>
+                            <td>{{ s.absent_count }}</td>
+                            <td>{{ s.total_students }}</td>
+                            <td>{{ s.avg_engagement if s.avg_engagement is not none else "–" }}</td>
+                            <td>
+                                <form method="post" action="{{ url_for('delete_record', session_id=s.id) }}"
+                                      onsubmit="return confirm('Delete this attendance record? You can then retake attendance for this class.');">
+                                    <button class="btn danger small" type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="muted">No sessions found for these filters.</p>
+            {% endif %}
+        </section>
+    </main>
+
+    <p class="footnote">Only attendance, counts and engagement scores are saved. No video or audio is stored.</p>
+</body>
+</html>

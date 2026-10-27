@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Teacher Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-page">
+    <form class="auth-card" method="post">
+        <h1>Teacher Login</h1>
+        {% if error %}<p class="error">{{ error }}</p>{% endif %}
+        <label>Email<input type="email" name="email" required></label>
+        <label>Password<input type="password" name="password" required></label>
+        <button class="btn primary" type="submit">Log in</button>
+        <p class="muted">New teacher? <a href="{{ url_for('register') }}">Create an account</a></p>
+    </form>
+</body>
+</html>

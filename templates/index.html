@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Attendance &amp; Engagement Agent</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Multimodal Attendance &amp; Engagement Agent</h1>
+        <div class="header-right">
+            <span class="muted">Teacher: {{ teacher_name }}</span>
+            <a class="logout" href="{{ url_for('records') }}">Records</a>
+            <span id="status-pill" class="pill idle">Stopped</span>
+            <a class="logout" href="{{ url_for('logout') }}">Log out</a>
+        </div>
+    </header>
+
+    <div class="banner">
+        <div class="banner-item"><span class="label">Date</span><span id="today" class="value">{{ today }}</span></div>
+        <div class="banner-item"><span class="label">Teacher</span><span class="value">{{ teacher_name }}</span></div>
+        <div class="banner-item"><span class="label">Class</span><span id="banner-class" class="value">–</span></div>
+        <div class="banner-item"><span class="label">Section</span><span id="banner-section" class="value">–</span></div>
+        <div class="banner-item"><span class="label">Strength</span><span id="banner-strength" class="value">–</span></div>
+        <div class="banner-item"><span class="label">Attendance</span><span id="banner-type" class="value">–</span></div>
+    </div>
+
+    <main>
+        <section class="card">
+            <div class="class-row">
+                <label>Class and section
+                    <select id="class-select"></select>
+                </label>
+                <label id="subject-wrap" hidden>Subject
+                    <input id="subject" type="text" placeholder="e.g. Data Structures">
+                </label>
+                <button id="add-class-btn" class="btn secondary" type="button">+ Add class</button>
+                <a id="manage-link" class="btn secondary linkbtn" href="#">Manage students</a>
+            </div>
+            <div id="class-info" class="muted"></div>
+
+            <div class="mode-row">
+                <label>Attendance type
+                    <select id="class-mode">
+                        <option value="lecture">Every lecture (college): can be taken several times a day</option>
+                        <option value="daily">Once a day (school): one attendance per day</option>
+                    </select>
+                </label>
+            </div>
+
+            <div id="add-class-form" class="class-form" hidden>
+                <label>Class
+                    <input id="new-grade" type="text" placeholder="e.g. 10 or CSE">
+                </label>
+                <label>Section
+                    <input id="new-section" type="text" placeholder="e.g. A">
+                </label>
+                <label>Attendance type
+                    <select id="new-class-mode">
+                        <option value="lecture">Every lecture (college)</option>
+                        <option value="daily">Once a day (school)</option>
+                    </select>
+                </label>
+                <button id="save-class-btn" class="btn primary" type="button">Save class</button>
+            </div>
+
+            <div class="video-box">
+                <img id="video" alt="Live camera feed" hidden>
+                <div id="placeholder">Camera is off. Press Start.</div>
+            </div>
+            <div class="controls">
+                <button id="start-btn" class="btn primary">Start</button>
+                <button id="stop-btn" class="btn danger" disabled>Stop</button>
+            </div>
+            <p id="error" class="error" hidden></p>
+            <p id="saved-note" class="saved" hidden></p>
+        </section>
+
+        <section class="card">
+            <div class="stats-grid">
+                <div class="stat"><span class="label">People in frame</span><span id="stat-people" class="value">0</span></div>
+                <div class="stat"><span class="label">Marked present</span><span id="stat-present" class="value">0</span></div>
+                <div class="stat"><span class="label">Absent</span><span id="stat-absent" class="value">–</span></div>
+                <div class="stat"><span class="label">Class strength</span><span id="stat-total" class="value">–</span></div>
+                <div class="stat"><span class="label">Class engagement</span><span id="stat-engagement" class="value">–</span></div>
+                <div class="stat"><span class="label">Audio</span><span id="stat-audio" class="value">–</span></div>
+            </div>
+
+            <h2>People in the camera</h2>
+            <table>
+                <thead>
+                    <tr><th>Student</th><th>Attendance</th><th>Attention</th><th>Score</th></tr>
+                </thead>
+                <tbody id="persons-body">
+                    <tr><td colspan="4" class="muted">No one detected</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="card">
+            <h2>Engagement timeline (every 5 seconds)</h2>
+            <div id="chart" class="chart">
+                <div class="muted">Bars appear every 5 seconds.</div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Attendance log</h2>
+            <ul id="attendance-log" class="log">
+                <li class="muted">No events yet.</li>
+            </ul>
+        </section>
+
+        <section class="card full" id="roster-card">
+            <h2>Student list</h2>
+            <div class="table-scroll tall">
+                <table>
+                    <thead>
+                        <tr><th>Roll no</th><th>Name</th><th>Status</th><th>First seen</th></tr>
+                    </thead>
+                    <tbody id="roster-body">
+                        <tr><td colspan="4" class="muted">Select a class to see its students.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card full" id="history-card">
+            <h2>Recent attendance history <a class="logout view-all" href="{{ url_for('records') }}">View all</a></h2>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr><th>Date</th><th>Class</th><th>Subject</th><th>Time</th><th>Present</th><th>Absent</th><th></th></tr>
+                    </thead>
+                    <tbody id="history-body">
+                        <tr><td colspan="7" class="muted">No sessions yet.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card full" id="suggest-card" hidden>
+            <h2>Teaching suggestions</h2>
+            <button id="suggest-btn" class="btn primary" type="button">Get suggestions for this session</button>
+            <p id="suggest-source" class="muted"></p>
+            <ul id="suggest-list" class="suggest"></ul>
+        </section>
+    </main>
+
+    <p class="footnote">Only attendance, counts and engagement scores are saved. No video or audio is stored.</p>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

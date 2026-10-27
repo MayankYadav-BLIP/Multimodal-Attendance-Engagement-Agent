@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage students</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body data-class-id="{{ c.id }}">
+    <header>
+        <h1>Manage students: {{ c.name }}</h1>
+        <div class="header-right">
+            <span class="muted">Teacher: {{ teacher_name }}</span>
+            <a class="logout" href="{{ url_for('index') }}">Dashboard</a>
+            <a class="logout" href="{{ url_for('logout') }}">Log out</a>
+        </div>
+    </header>
+
+    <div class="banner">
+        <div class="banner-item"><span class="label">Class</span><span class="value">{{ c.grade }}</span></div>
+        <div class="banner-item"><span class="label">Section</span><span class="value">{{ c.section or "–" }}</span></div>
+        <div class="banner-item"><span class="label">Strength</span><span id="strength" class="value">{{ c.strength }}</span></div>
+        <div class="banner-item"><span class="label">Attendance</span><span class="value">{{ "Once a day" if c.mode == "daily" else "Every lecture" }}</span></div>
+    </div>
+
+    <main class="records-main">
+        <section class="card">
+            <h2>Add a student</h2>
+            <div class="student-form">
+                <label>Roll number
+                    <input id="roll-no" type="text" placeholder="e.g. 12">
+                </label>
+                <label>Name
+                    <input id="student-name" type="text" placeholder="e.g. Asha Verma">
+                </label>
+                <label>Face photos (3 or more work best)
+                    <input id="photo-files" type="file" accept="image/*" multiple>
+                </label>
+            </div>
+
+            <div class="cam-row">
+                <button id="cam-btn" class="btn secondary" type="button">Use camera instead</button>
+                <button id="capture-btn" class="btn secondary" type="button" hidden>Capture 5 photos</button>
+                <span id="shot-text" class="muted"></span>
+            </div>
+            <video id="cam" class="cam" autoplay playsinline muted hidden></video>
+
+            <div class="controls">
+                <button id="save-student-btn" class="btn primary" type="button">Save student</button>
+            </div>
+            <p id="msg" hidden></p>
+            <p class="muted small-note">Photos are used only to compute a numeric face fingerprint. The photos themselves are not stored.</p>
+        </section>
+
+        <section class="card">
+            <h2>Students in {{ c.name }}</h2>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr><th>Roll no</th><th>Name</th><th></th></tr>
+                    </thead>
+                    <tbody id="students-body">
+                        <tr><td colspan="3" class="muted">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/roster.js') }}"></script>
+</body>
+</html>
