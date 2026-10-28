@@ -43,12 +43,6 @@ Multimodal-Attendance-Agent/
 ├── README.md
 ├── .gitignore
 │
-├── models/
-│   ├── face_detector.tflite
-│   ├── face_landmarker.task
-│   ├── face_detector_yunet.onnx
-│   └── face_recognizer_sface.onnx
-│
 ├── modules/
 │   ├── head_pose.py
 │   ├── recognition.py
@@ -63,8 +57,7 @@ Multimodal-Attendance-Agent/
 ├── test_audio.py
 └── test_engagement.py
 ```
-
-*Note: This structure shows the main files identified in the project. Additional files may exist inside the folders.*
+**Note:** Required model files are not included in this repository yet. They must be obtained separately and placed in the expected `models/` directory before running the relevant functionality.
 
 ## Installation and Setup
 
