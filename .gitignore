@@ -42,3 +42,7 @@ Thumbs.db
 # Additional generated files
 *.log.*
 .vscode-test/
+
+
+# Machine learning model files
+models/
