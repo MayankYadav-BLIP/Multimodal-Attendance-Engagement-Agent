@@ -175,3 +175,14 @@ A license has not yet been specified for this project. Before distributing the p
 **Project:** Multimodal Attendance & Engagement System
 
 Developed as an academic and practical project exploring computer vision, audio processing, attendance management, and engagement analysis.
+
+
+## Development Note
+
+This is an academic portfolio project developed with AI-assisted coding and adapted from existing project resources.
+
+Original project reference:
+[Multimodal Attendance & Engagement Agent](https://github.com/HarshitaBatra42/Multimodal-Attendance-and-Engagement-Agent)
+
+The project is presented for educational and demonstration purposes. Third-party code, dependencies, and model assets remain subject to their respective rights and licensing terms.
+
