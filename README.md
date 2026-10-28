@@ -181,8 +181,6 @@ Developed as an academic and practical project exploring computer vision, audio 
 
 This is an academic portfolio project developed with AI-assisted coding and adapted from existing project resources.
 
-Original project reference:
-[Multimodal Attendance & Engagement Agent](https://github.com/HarshitaBatra42/Multimodal-Attendance-and-Engagement-Agent)
 
 The project is presented for educational and demonstration purposes. Third-party code, dependencies, and model assets remain subject to their respective rights and licensing terms.
 
