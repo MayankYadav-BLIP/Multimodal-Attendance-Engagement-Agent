@@ -115,6 +115,10 @@ http://127.0.0.1:5000
 
 The exact address depends on the application's configuration.
 
+### Model Files
+
+The required model files are not included in this repository. Before running the application, obtain the required models from their original sources, verify their applicable licenses, and place them in the expected `models/` directory. Some functionality may not work until these files are available.
+
 ## Testing
 
 The project includes scripts for testing audio and engagement-related functionality:
