@@ -81,11 +81,9 @@ Install the following before running the application:
 After publishing the project to GitHub, run:
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
-cd Multimodal-Attendance-Agent
+git clone https://github.com/MayankYadav-BLIP/Multimodal-Attendance-Engagement-Agent.git
+cd Multimodal-Attendance-Engagement-Agent
 ```
-
-Replace `YOUR_GITHUB_REPOSITORY_URL` with your actual repository URL.
 
 ### 2. Create a Virtual Environment
 
@@ -107,7 +105,7 @@ If PowerShell blocks activation, you can run the environment's Python executable
 
 ```powershell
 python -m pip install --upgrade pip
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ### 5. Run the Application
